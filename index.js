@@ -32,6 +32,14 @@ async function run() {
             res.send(mobileBrand);
         })
 
+        //phone api
+
+        app.post('/addPhone', async (req, res) => {
+            const phone = req.body;
+            const result = await phoneCollection.insertOne(phone);
+            res.send(result);
+        })
+
     }
     finally {
 
