@@ -17,6 +17,7 @@ async function run() {
     try {
         const mobileCollection = client.db('mobileStore').collection('mobiles');
         const phoneCollection = client.db('mobileStore').collection('phones');
+        const userCollection = client.db('mobileStore').collection('users');
 
         app.get('/mobileBrands', async (req, res) => {
             const query = {}
@@ -34,7 +35,14 @@ async function run() {
 
         //phone api
 
-        app.post('/addPhone', async (req, res) => {
+        app.get('/myphones', async (req, res) => {
+            const email = req.query.email;
+            const query = { sellerEmail: email };
+            const phones = await phoneCollection.find(query).toArray();
+            res.send(phones);
+        })
+
+        app.post('/phones', async (req, res) => {
             const phone = req.body;
             const result = await phoneCollection.insertOne(phone);
             res.send(result);
