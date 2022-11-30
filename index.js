@@ -48,6 +48,31 @@ async function run() {
             res.send(result);
         })
 
+        //users api
+        app.get('/seller', async (req, res) => {
+            const query = { category: 'seller' };
+            const seller = await userCollection.find(query).toArray();
+            res.send(seller);
+        })
+
+        app.get('/buyer', async (req, res) => {
+            const query = { category: 'buyer' };
+            const seller = await userCollection.find(query).toArray();
+            res.send(seller);
+        })
+
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const users = await userCollection.find(query).toArray();
+            res.send(users);
+        })
+
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await userCollection.insertOne(user);
+            res.send(result);
+        })
+
     }
     finally {
 
