@@ -77,6 +77,13 @@ async function run() {
             res.send(seller);
         })
 
+        app.get('/users/buyer/:email', async (req, res) => {
+            const email = req.params.email
+            const query = { email }
+            const user = await userCollection.findOne(query)
+            res.send({ isBuyer: user?.category === 'buyer' })
+        })
+
         app.get('/users/seller/:email', async (req, res) => {
             const email = req.params.email
             const query = { email }
