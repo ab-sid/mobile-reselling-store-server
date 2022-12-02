@@ -34,6 +34,7 @@ async function run() {
         const mobileCollection = client.db('mobileStore').collection('mobiles');
         const phoneCollection = client.db('mobileStore').collection('phones');
         const userCollection = client.db('mobileStore').collection('users');
+        const bookingsCollection = client.db('mobileStore').collection('bookings');
 
         app.get('/mobileBrands', async (req, res) => {
             const query = {}
@@ -55,6 +56,18 @@ async function run() {
             const email = req.query.email;
             const query = { sellerEmail: email };
             const phones = await phoneCollection.find(query).toArray();
+            res.send(phones);
+        })
+
+        app.get('/phones', async (req, res) => {
+            let query = {}
+            if (req.query.productCat) {
+                query = {
+                    productCat: req.query.productCat
+                }
+            }
+            const cursor = phoneCollection.find(query);
+            const phones = await cursor.toArray();
             res.send(phones);
         })
 
@@ -146,6 +159,19 @@ async function run() {
             const filter = { _id: ObjectId(id) };
             const result = await userCollection.deleteOne(filter);
             res.send(result);
+        })
+
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+            const result = await bookingsCollection.insertOne(booking)
+            res.send(result)
+        })
+
+        app.get('/bookings', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const bookings = await bookingsCollection.find(query).toArray();
+            res.send(bookings);
         })
 
     }
